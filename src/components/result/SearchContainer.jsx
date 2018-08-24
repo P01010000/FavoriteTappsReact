@@ -21,7 +21,7 @@ class SearchContainer extends React.Component {
   async loadNewData({ target: { value: searchString } }) {
     chayns.showWaitCursor();
     this.state.start = 0;
-    this.state.searchString = searchString;
+    this.state.searchString = searchString.length > 0 ? searchString : 'chayns';
     this.state.reachedEnd = true;
     this.state.tapps = [];
     try {
