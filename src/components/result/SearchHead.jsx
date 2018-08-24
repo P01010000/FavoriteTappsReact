@@ -9,9 +9,8 @@ class SearchHead extends React.Component {
 
   constructor() {
     super();
-    this.state = { };
+    this.state = { timeout: undefined };
   }
-
 
   render() {
     return (

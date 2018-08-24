@@ -25,7 +25,13 @@ class ResultList extends React.Component {
         return (
             <div className="accordion__body color--1">
                 {listItems}
-                {this.props.reachedEnd ? <div className="grid__item" style={{ textAlign: 'right' }} onClick={this.props.callback} onKeyPress={() => undefined} >{ SHOW_MORE }</div> : undefined}
+                {!this.props.reachedEnd ?
+                    <div className="accordion__content">
+                        <div style={{ textAlign: 'right' }} >
+                            <a href="#" onClick={this.props.callback} onKeyPress={() => undefined} >{ SHOW_MORE }</a>
+                        </div>
+                    </div>
+                    : undefined}
             </div>
         );
     }

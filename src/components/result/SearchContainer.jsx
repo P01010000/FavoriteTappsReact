@@ -12,7 +12,7 @@ class SearchContainer extends React.Component {
       reachedEnd: true,
       start: 0,
       take: ITEMS_PER_REQUEST,
-      searchString: 'chayns'
+      searchString: 'chayns',
     };
     this.loadNewData = this.loadNewData.bind(this);
     this.loadMoreData = this.loadMoreData.bind(this);
@@ -48,11 +48,12 @@ class SearchContainer extends React.Component {
       return res.json();
     });
     if (Data === null) Data = [];
-    console.log(Data.length);
+
     this.setState({ tapps: this.state.tapps.concat(Data), start: this.state.start + Data.length, reachedEnd: Data.length < this.state.take });
   }
 
   render() {
+    console.log(this.state.reachedEnd);
     return (
       <div className="accordion accordion--open" data-group="site" style={{ overflow: 'hidden', marginTop: '30px' }} >
         <SearchHead callback={this.loadNewData} />
