@@ -11,20 +11,54 @@ class SearchContainer extends React.Component {
       tapps: [],
       reachedEnd: true,
       start: 0,
-      take: ITEMS_PER_REQUEST
-    }
+      take: ITEMS_PER_REQUEST,
+      searchString: 'chayns',
+    };
     this.loadNewData = this.loadNewData.bind(this);
     this.loadMoreData = this.loadMoreData.bind(this);
   }
 
-  loadNewData({ target: { value: searchString } }) {
-    console.log(searchString);
-    this.setState({ tapps: [] });
+  async loadNewData(searchString) {
+    chayns.showWaitCursor();
+    let result = {};
+    this.state.searchString = searchString.length > 0 ? searchString : 'chayns';
+    try {
+      result = await this.fetchData(this.state.searchString, 0, this.state.take);
+      this.setState({
+        tapps: result.tapps,
+        start: result.tapps.length,
+        reachedEnd: result.reachedEnd
+      })
+    } catch (err) {
+      this.setState({});
+    }
+    chayns.hideWaitCursor();
   }
 
-  loadMoreData() {
-    console.log("hi");
-    this.setState({ tapps: [] });
+  async loadMoreData() {
+    chayns.showWaitCursor();
+    let result = {};
+    try {
+      result = await this.fetchData(this.state.searchString, this.state.start, this.state.take);
+      this.setState({
+        tapps: this.state.tapps.concat(result.tapps),
+        start: this.state.start + result.tapps.length,
+        reachedEnd: result.reachedEnd
+      })
+    } catch (err) {
+      this.setState({});
+    }
+    chayns.hideWaitCursor();
+  }
+
+  async fetchData(searchString, start, take) {
+    let { Data } = await fetch(`https://chayns1.tobit.com/TappApi/Site/SlitteApp?SearchString=${searchString}&Skip=${start}&Take=${take}`).then((res) => {
+      if (!res.ok) throw new Error(`${res.status}\n${res.statusText}`);
+      return res.json();
+    });
+    if (Data === null) Data = [];
+
+    return { tapps: Data, reachedEnd: Data.length < this.state.take };
   }
 
   render() {
