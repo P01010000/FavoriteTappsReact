@@ -18,14 +18,17 @@ class SearchContainer extends React.Component {
     this.loadMoreData = this.loadMoreData.bind(this);
   }
 
-  async loadNewData({ target: { value: searchString } }) {
+  async loadNewData(searchString) {
     chayns.showWaitCursor();
-    this.state.start = 0;
+    let result = {};
     this.state.searchString = searchString.length > 0 ? searchString : 'chayns';
-    this.state.reachedEnd = true;
-    this.state.tapps = [];
     try {
-      await this.fetchData();
+      result = await this.fetchData(this.state.searchString, 0, this.state.take);
+      this.setState({
+        tapps: result.tapps,
+        start: result.tapps.length,
+        reachedEnd: result.reachedEnd
+      })
     } catch (err) {
       this.setState({});
     }
@@ -34,26 +37,31 @@ class SearchContainer extends React.Component {
 
   async loadMoreData() {
     chayns.showWaitCursor();
+    let result = {};
     try {
-      await this.fetchData();
+      result = await this.fetchData(this.state.searchString, this.state.start, this.state.take);
+      this.setState({
+        tapps: this.state.tapps.concat(result.tapps),
+        start: this.state.start + result.tapps.length,
+        reachedEnd: result.reachedEnd
+      })
     } catch (err) {
       this.setState({});
     }
     chayns.hideWaitCursor();
   }
 
-  async fetchData() {
-    let { Data } = await fetch(`https://chayns1.tobit.com/TappApi/Site/SlitteApp?SearchString=${this.state.searchString}&Skip=${this.state.start}&Take=${this.state.take}`).then((res) => {
+  async fetchData(searchString, start, take) {
+    let { Data } = await fetch(`https://chayns1.tobit.com/TappApi/Site/SlitteApp?SearchString=${searchString}&Skip=${start}&Take=${take}`).then((res) => {
       if (!res.ok) throw new Error(`${res.status}\n${res.statusText}`);
       return res.json();
     });
     if (Data === null) Data = [];
 
-    this.setState({ tapps: this.state.tapps.concat(Data), start: this.state.start + Data.length, reachedEnd: Data.length < this.state.take });
+    return { tapps: Data, reachedEnd: Data.length < this.state.take };
   }
 
   render() {
-    console.log(this.state.reachedEnd);
     return (
       <div className="accordion accordion--open" data-group="site" style={{ overflow: 'hidden', marginTop: '30px' }} >
         <SearchHead callback={this.loadNewData} />

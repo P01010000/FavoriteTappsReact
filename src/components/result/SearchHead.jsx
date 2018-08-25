@@ -10,6 +10,13 @@ class SearchHead extends React.Component {
   constructor() {
     super();
     this.state = { timeout: undefined };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(ev, props) {
+    clearTimeout(this.state.timeout);
+    this.state.searchString = ev.target.value;
+    this.state.timeout = setTimeout(() => this.props.callback(this.state.searchString), 400);
   }
 
   render() {
@@ -21,7 +28,7 @@ class SearchHead extends React.Component {
           </div>
         </div>
         <div className="Suche Suche--accordion chayns__border-color--50">
-          <input type="text" placeholder="Suche" id="searchFilter" onKeyUp={this.props.callback} defaultValue="" />
+          <input type="text" placeholder="Suche" id="searchFilter" onKeyUp={this.handleChange} defaultValue="" />
           <label><i className="fa fa-search" /></label>
         </div>
       </div>
