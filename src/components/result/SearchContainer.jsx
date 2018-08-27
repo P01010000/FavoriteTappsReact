@@ -18,6 +18,10 @@ class SearchContainer extends React.Component {
     this.loadMoreData = this.loadMoreData.bind(this);
   }
 
+  componentDidMount() {
+    this.loadNewData('chayns');
+  }
+
   async loadNewData(searchString) {
     chayns.showWaitCursor();
     let result = {};
@@ -28,7 +32,7 @@ class SearchContainer extends React.Component {
         tapps: result.tapps,
         start: result.tapps.length,
         reachedEnd: result.reachedEnd
-      })
+      });
     } catch (err) {
       this.setState({});
     }
@@ -44,7 +48,7 @@ class SearchContainer extends React.Component {
         tapps: this.state.tapps.concat(result.tapps),
         start: this.state.start + result.tapps.length,
         reachedEnd: result.reachedEnd
-      })
+      });
     } catch (err) {
       this.setState({});
     }

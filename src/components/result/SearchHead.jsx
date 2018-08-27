@@ -13,7 +13,7 @@ class SearchHead extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(ev, props) {
+  handleChange(ev) {
     clearTimeout(this.state.timeout);
     this.state.searchString = ev.target.value;
     this.state.timeout = setTimeout(() => this.props.callback(this.state.searchString), 400);
