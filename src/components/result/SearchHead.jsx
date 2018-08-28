@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { OVERVIEW } from '../../constants/text';
+import { OVERVIEW, SEARCH } from '../../constants/text';
 
 class SearchHead extends React.Component {
   static propTypes = {
@@ -13,7 +13,7 @@ class SearchHead extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(ev, props) {
+  handleChange(ev) {
     clearTimeout(this.state.timeout);
     this.state.searchString = ev.target.value;
     this.state.timeout = setTimeout(() => this.props.callback(this.state.searchString), 400);
@@ -28,7 +28,7 @@ class SearchHead extends React.Component {
           </div>
         </div>
         <div className="Suche Suche--accordion chayns__border-color--50">
-          <input type="text" placeholder="Suche" id="searchFilter" onKeyUp={this.handleChange} defaultValue="" />
+          <input type="text" placeholder={SEARCH} id="searchFilter" onKeyUp={this.handleChange} defaultValue="" />
           <label><i className="fa fa-search" /></label>
         </div>
       </div>
