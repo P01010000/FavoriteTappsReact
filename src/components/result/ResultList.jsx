@@ -23,7 +23,7 @@ class ResultList extends React.Component {
     render() {
         const listItems = this.props.tapps.map(t => <ResultListItem key={this.props.siteId} {...t} />);
         return (
-            <div className="accordion__body color--1">
+            <div className={`accordion__body color--${chayns.env.parameters.colormode}`} >
                 {listItems}
                 {!this.props.reachedEnd ?
                     <div className="accordion__content">
