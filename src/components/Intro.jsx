@@ -9,7 +9,7 @@ const Intro = () => (
         </h1>
         <p>
             {DESCRIPTION1}
-            <a href="#addNewTapp">hier</a>
+            <a href="#request">hier</a>
             {DESCRIPTION2}
         </p>
     </div>

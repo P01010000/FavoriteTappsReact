@@ -4,7 +4,7 @@ import Formular from './formular/Formular';
 
 const Content = () => (
     <div className="tapp__content content">
-        <SearchContainer />
+        <SearchContainer defaultSearch="chayns" />
         <Formular />
     </div>
 );

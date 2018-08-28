@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ResultListItem from './ResultListItem';
 import './ResultList.scss';
-import { SHOW_MORE } from '../../constants/text';
+import { SHOW_MORE, NOTHING_FOUND } from '../../constants/text';
 
 class ResultList extends React.Component {
     static propTypes = {
@@ -31,6 +31,9 @@ class ResultList extends React.Component {
                             <a href="#" onClick={this.props.callback} onKeyPress={() => undefined} >{ SHOW_MORE }</a>
                         </div>
                     </div>
+                    : undefined}
+                {this.props.tapps.length === 0 ?
+                    <div className="accordion__content">{NOTHING_FOUND}</div>
                     : undefined}
             </div>
         );

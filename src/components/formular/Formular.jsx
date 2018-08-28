@@ -1,13 +1,19 @@
 import React from 'react';
 import './Formular.scss';
+import login from '../../utils/login';
 
 class Formular extends React.Component {
-  static handleSubmit(ev) {
+  static async handleSubmit(ev) {
     const form = ev.target;
     ev.preventDefault();
-    chayns.intercom.sendMessageToPage({ text: [...new FormData(form).entries()].map(([k, v]) => `${k} = ${v}`).join('\n') })
-    .then(() => chayns.dialog.alert('Deine Site wurde hinzugefügt'))
-    .then(() => form.reset());
+    try {
+      await login();
+      await chayns.intercom.sendMessageToPage({ text: [...new FormData(form).entries()].map(([k, v]) => `${k} = ${v}`).join('\n') });
+      chayns.dialog.alert('Site wird in Kürze hinzugefügt');
+      form.reset();
+    } catch (err) {
+      chayns.dialog.alert('Du musst dich vorher einloggen');
+    }
   }
 
   constructor() {
@@ -17,7 +23,7 @@ class Formular extends React.Component {
 
   render() {
     return (
-    <div className="accordion" data-group="site" id="request">
+    <div className="accordion" data-group="site">
       <div className="accordion__head">Site hinzufügen
         <div className="badge right">
             <i className="fa fa-plus" />
