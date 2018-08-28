@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchContainer from './result/SearchContainer';
+import SearchContainer from './search/SearchContainer';
 import Formular from './formular/Formular';
 
 const Content = () => (

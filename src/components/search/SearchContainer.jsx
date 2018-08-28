@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SearchHead from './SearchHead';
-import ResultList from './ResultList';
+import ResultList from '../result/ResultList';
 import { ITEMS_PER_REQUEST } from '../../constants/settings';
 import './SearchContainer.scss';
 import fetchSites from '../../utils/fetchSites';
