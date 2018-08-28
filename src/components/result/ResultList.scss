@@ -1,6 +1,5 @@
 .ListItem {
     width: 100%;
-    border-bottom: 1px solid #d2d9e6;
     .ListItem__head {
         padding: 0 9px;
         display: flex;
@@ -28,8 +27,12 @@
             }
         }
         .ListItem__Title {
+            width: calc(100% - 50px);
             .ListItem__Title--headline {
                 margin: 0;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
             .ListItem__Title--description {
                 margin: 0;
@@ -98,5 +101,10 @@
                 background-color: #161616;
             }
         }
+    }
+}
+.accordion {
+    .accordion__item {
+        padding: 0;
     }
 }

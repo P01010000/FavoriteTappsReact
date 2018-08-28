@@ -1,30 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SearchHead from './SearchHead';
 import ResultList from './ResultList';
 import { ITEMS_PER_REQUEST } from '../../constants/settings';
 import './SearchContainer.scss';
+import fetchSites from '../../utils/fetchSites';
 
 class SearchContainer extends React.Component {
-  constructor() {
-    super();
+  static propTypes = {
+    defaultSearch: PropTypes.string.isRequired
+  }
+
+  constructor(props) {
+    super(props);
     this.state = {
       tapps: [],
       reachedEnd: true,
       start: 0,
-      take: ITEMS_PER_REQUEST
-    }
+      take: ITEMS_PER_REQUEST,
+      defaultSearch: props.defaultSearch,
+      searchString: props.defaultSearch,
+    };
     this.loadNewData = this.loadNewData.bind(this);
     this.loadMoreData = this.loadMoreData.bind(this);
   }
 
-  loadNewData({ target: { value: searchString } }) {
-    console.log(searchString);
-    this.setState({ tapps: [] });
+  componentDidMount() {
+    this.loadNewData(this.state.defaultSearch);
   }
 
-  loadMoreData() {
-    console.log("hi");
-    this.setState({ tapps: [] });
+  async loadNewData(searchString) {
+    this.loadSiteData(searchString || this.state.defaultSearch, 0, this.state.take, false);
+  }
+
+  async loadMoreData() {
+    this.loadSiteData(this.state.searchString, this.state.start, this.state.take, true);
+  }
+
+  async loadSiteData(searchString, start, take, append) {
+    try {
+      const result = await fetchSites(searchString, start, take);
+      this.setState({
+        tapps: append ? this.state.tapps.concat(result.sites) : result.sites,
+        searchString,
+        start: start + result.sites.length,
+        reachedEnd: result.reachedEnd
+       });
+    } catch (err) {
+      this.setState({});
+    }
   }
 
   render() {
